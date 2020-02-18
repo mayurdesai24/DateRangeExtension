@@ -1,5 +1,3 @@
-
-
 <html>
   <head>
   
@@ -7,8 +5,6 @@
   <body>
   <div id="configure" hide>
 	<h3>Configuration window:</h3>
-	
-
 <div id="opsSelection2" >
 # of days from today for to_date date:&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="minR" id="minR" value="0"/><br>
 # of days from today for from_date date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="maxR" id="maxR" value="0"/><br>
@@ -17,18 +13,16 @@
 <br><button type="button" value="Submit" onclick="javascript:saveDs()">Save</button>
 </div>
   </body>
-<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 
-    <script type="text/javascript" src="tableau.extensions.1.latest.js"></script>
-<script>
+    	<script type="text/javascript" src="tableau.extensions.1.latest.js"></script>
+
+	<script>
 (function () {
-//alert('in func');
-
 $(document).ready(function () {
 	    // Initializes the dialog and calls the Build Dialog window.
 	    tableau.extensions.initializeDialogAsync().then(function (openPayload) {
-	  //    alert('mini init');
-			if(tableau.extensions.settings.get("minD") >0)
+	  		if(tableau.extensions.settings.get("minD") >0)
 			{
 			document.getElementById('minR').value = tableau.extensions.settings.get("minD");
 			}
@@ -59,7 +53,6 @@ else
 {
 if(parseInt(minD, 10) > parseInt(maxD, 10))
 {alert('min cannot be greater than max');return;}}
-//alert('in save');	
  tableau.extensions.settings.set("opR",opR);
  tableau.extensions.settings.set("minD",minD);
  tableau.extensions.settings.set("maxD",maxD);  
