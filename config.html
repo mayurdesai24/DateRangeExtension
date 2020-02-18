@@ -1,0 +1,74 @@
+
+
+<html>
+  <head>
+  
+  </head>
+  <body>
+  <div id="configure" hide>
+	<h3>Configuration window:</h3>
+	
+
+<div id="opsSelection2" >
+# of days from today for to_date date:&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="minR" id="minR" value="0"/><br>
+# of days from today for from_date date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="number" name="maxR" id="maxR" value="0"/><br>
+<i><font size="1" color="red">***Please select 0 to keep selected values in the slider.</font></i>
+</div>
+<br><button type="button" value="Submit" onclick="javascript:saveDs()">Save</button>
+</div>
+  </body>
+<script src="./jquery-3.2.1.min.js"></script>
+
+    <script type="text/javascript" src="./tableau.extensions.1.latest.js"></script>
+<script>
+(function () {
+//alert('in func');
+
+$(document).ready(function () {
+	    // Initializes the dialog and calls the Build Dialog window.
+	    tableau.extensions.initializeDialogAsync().then(function (openPayload) {
+	  //    alert('mini init');
+			if(tableau.extensions.settings.get("minD") >0)
+			{
+			document.getElementById('minR').value = tableau.extensions.settings.get("minD");
+			}
+			if(tableau.extensions.settings.get("maxD") >0)
+			{
+			document.getElementById('maxR').value = tableau.extensions.settings.get("maxD");
+			}
+	    });
+	  });
+
+	  
+	  
+window.saveDs = function()
+{ 
+var opR='min';
+var minD=document.getElementById('minR').value;
+var maxD=document.getElementById('maxR').value;
+if(minD==0 && maxD==0)
+{}
+else
+{
+if(minD == maxD)
+{alert('min & max cannot have same values');return;}
+}
+if(maxD == 0)
+{}
+else
+{
+if(parseInt(minD, 10) > parseInt(maxD, 10))
+{alert('min cannot be greater than max');return;}}
+//alert('in save');	
+ tableau.extensions.settings.set("opR",opR);
+ tableau.extensions.settings.set("minD",minD);
+ tableau.extensions.settings.set("maxD",maxD);  
+ tableau.extensions.settings.saveAsync().then((currentSettings) => {
+            tableau.extensions.ui.closeDialog("10");
+        });
+}
+
+})();
+</script>
+
+</html>
