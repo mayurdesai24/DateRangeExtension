@@ -176,7 +176,7 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 	});
 }
 function configure() {
-			const popupUrl = 'http://localhost:8080/config.html';
+			const popupUrl = 'https://mayurdesai24.github.io/DateRangeExtension/config.html';
 			let defaultPayload = "";
 			tableau.extensions.ui.displayDialogAsync(popupUrl, defaultPayload, { height:400, width:600 }).then((closePayload) => { 
 				//alert('config');
