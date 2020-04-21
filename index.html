@@ -76,9 +76,9 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 				today = moment(today);
 			 	previousdate= moment(otherdate);
 				previousdate1= moment(otherdate1);
-				alert(previousdate);
+				//alert(previousdate);
 				const diffDays = today.diff(previousdate,'days');
-				alert(diffDays);
+				//alert(diffDays);
 				const diffDays1 = today.diff(previousdate1,'days');
 				let minVal = new Date();
 				let maxVal = new Date();
@@ -100,9 +100,9 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 				return;
 				}
 				if(minDays >0 && maxDays ==0)
-				{alert('here1');alert(minDays);alert(diffDays);
-				maxVal.setDate(maxVal.getDate() -parseInt(minDays, 10));
-				minVal.setDate(minVal.getDate() -diffDays);
+				{//alert('here1');alert(minDays);alert(diffDays);
+				maxVal.setDate(maxVal.getDate() -(diffDays1-1));
+				minVal.setDate(minVal.getDate() -parseInt(maxDays, 10));
 				}
 				if(minDays == 0 && maxDays >0)
 				{
