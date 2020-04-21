@@ -101,8 +101,8 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 				}
 				if(minDays >0 && maxDays ==0)
 				{//alert('here1');alert(minDays);alert(diffDays);
-				maxVal.setDate(maxVal.getDate() -(parseInt(minDays, 10)-1));
-				minVal.setDate(minVal.getDate() -(diffDays1));
+				maxVal.setDate(maxVal.getDate() -(parseInt(minDays, 10)));
+				minVal.setDate(minVal.getDate() -(diffDays));
 				}
 				if(minDays == 0 && maxDays >0)
 				{
