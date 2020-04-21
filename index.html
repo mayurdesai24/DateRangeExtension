@@ -77,7 +77,7 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 			 	previousdate= moment(otherdate);
 				previousdate1= moment(otherdate1);
 				alert(previousdate);
-				const diffDays = today.diff(previousdate,'days');
+				const diffDays = today.diff(otherdate,'days');
 				//alert(diffDays);
 				const diffDays1 = today.diff(previousdate1,'days');
 				let minVal = new Date();
