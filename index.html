@@ -69,14 +69,16 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 		let difference = 0;
 		switch (filter.filterType) {
 			 case 'range':
-				otherdate = filter.minValue.formattedValue;alert(otherdate);
-				otherdate1 = filter.maxValue.formattedValue;alert(otherdate1);
+				otherdate = filter.minValue.formattedValue;
+				otherdate1 = filter.maxValue.formattedValue;
 			        let previousdate;
 				let previousdate1;
 				today = moment(today);
 			 	previousdate= moment(otherdate);
 				previousdate1= moment(otherdate1);
+				alert(previousdate);
 				const diffDays = today.diff(previousdate,'days');
+				alert(diffDays);
 				const diffDays1 = today.diff(previousdate1,'days');
 				let minVal = new Date();
 				let maxVal = new Date();
