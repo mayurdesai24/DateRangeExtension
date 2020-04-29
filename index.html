@@ -1,14 +1,17 @@
 <html>
   <head>
   	<!-- jQuery -->
-	<script src="./jquery-3.2.1.min.js" type="text/javascript"></script>
-	<!-- Tableau extension API -->
-	<script src="./tableau.extensions.1.latest.js" type="text/javascript"></script>
-    	<!-- Moment file for date operations -->
-	<script src="./moment.js" type="text/javascript"></script>
+	<script src="./jquery-3.2.1.min.js"></script>
+
+    <script src="/tableau.extensions.1.latest.js"></script>
+
+	<script src="/moment.js"></script>
   </head>
   <body>
-    
+
+
+<font size="1">Please Configure custom date range extension.</font>
+
   </body>
   <script>
   'use strict';
@@ -18,23 +21,29 @@
 			// Added new code here to point to the configure function.
 			tableau.extensions.initializeAsync({ 'configure':configure }).then(function () {
 			let oR;let mD;let mxD;
+			//alert('init');
 			datefiltering(oR,mD,mxD);
 	}, function () { console.log('Error while Initializing: ' + err.toString()); });
 		});	
 
 function datefiltering()
 {
+
+//alert('datefiltering');
 const dashboard = tableau.extensions.dashboardContent.dashboard;
-		
-		//following line can be used for static sheet sleection. let selectedWorksheet = dashboard.worksheets.find(w => w.name === 'datetrial');
+
+		//let selectedWorksheet = dashboard.worksheets.find(w => w.name === 'datetrial');
 		dashboard.worksheets.forEach(function (worksheet) {
 		let selectedWorksheet = dashboard.worksheets.find(w => w.name === worksheet.name);
+		//alert(selectedWorksheet);
 		updateFilterRange(selectedWorksheet);
 		});
 }
 
 function updateFilterRange(worksheet)
 {
+//alert('up');
+
 	let minD = tableau.extensions.settings.get("minD");
 	let opR = tableau.extensions.settings.get("opR");
 	let maxD = tableau.extensions.settings.get("maxD");
@@ -43,46 +52,74 @@ function updateFilterRange(worksheet)
 		let dashboardfilters = [];
 		filterFetchPromises.push(worksheet.getFiltersAsync());
 		  Promise.all(filterFetchPromises).then(function (fetchResults) {
-      			fetchResults.forEach(function (filtersForWorksheet) {
-        			filtersForWorksheet.forEach(function (filter) {
-         				 dashboardfilters.push(filter);
-       			 	});
-      		  	});
+      fetchResults.forEach(function (filtersForWorksheet) {
+        filtersForWorksheet.forEach(function (filter) {
+          dashboardfilters.push(filter);
+        });
+      });
+
       updateFilters(dashboardfilters, worksheet,opR,minD,maxD);
-  		  });
-	
+
+    });
+
+
 }
-		
 function updateFilters(filters, worksheet,opr,minDays,maxDays)
 {
-	
+
 	filters.forEach(function (filter) {
+		//	alert(filter.filterType);
 		if(filter.filterType == 'range')
-		{ 
+{ 
 		//alert('invalues');
- 		let filterValues = '';
-		let fieldName = filter.fieldName;
-		let selectedWorksheet = worksheet;
+ let filterValues = '';
+ let fieldName = filter.fieldName;
+ //let dashboard = tableau.extensions.dashboardContent.dashboard;
+ let selectedWorksheet = worksheet;
+
 		let today = new Date();
+
 		let otherdate = new Date();
 		let otherdate1 = new Date();
 		let difference = 0;
 		switch (filter.filterType) {
+
 			 case 'range':
 				otherdate = filter.minValue.formattedValue;
+      // alert(otherdate);
 				otherdate1 = filter.maxValue.formattedValue;
-			        let previousdate;
-				let previousdate1;
-				today = moment(today);
-			 	previousdate= moment(otherdate);
-				previousdate1= moment(otherdate1);
-				//alert(otherdate);
-				const diffDays = today.diff(previousdate,'days');
-				//alert(diffDays);
-				const diffDays1 = today.diff(previousdate1,'days');
-				let minVal = new Date();
-				let maxVal = new Date();
-			
+			// today =moment.parseZone(today).utc().format();
+			// today=moment.utc(today).format('L');
+			// alert(today);
+			//otherdate=moment.utc(otherdate).format('L');
+			//start of area where min date to keep as is
+			//let day1 = otherdate.substring(0, 2);
+			//let month1 = otherdate.substring(3,5);
+			//month1 = month1-1;
+			//let year1 = otherdate.substring(6,10);
+       // alert(day1);
+			//let previousdate = new Date(year1,month1,day1);
+			//alert(previousdate);
+			//let day11 = otherdate1.substring(0, 2);
+			//let month11 = otherdate1.substring(3,5);
+			//month11 = month11-1;
+			//let year11 = otherdate1.substring(6,10);
+			//let previousdate1 = new Date(year11,month11,day11);
+			//end
+			//alert(day1);alert(month1);alert(year1); 
+			//alert(previousdate1);
+        let previousdate;let previousdate1;
+			 today = moment(today);
+			 previousdate= moment(otherdate);
+			 previousdate1= moment(otherdate1);
+			//alert(previousdate);alert(previousdate1);
+			 const diffDays = today.diff(previousdate,'days');
+			const diffDays1 = today.diff(previousdate1,'days');
+		//alert(diffDays1);
+			let minVal = new Date();
+			//minVal= moment(minVal);
+			let maxVal = new Date();
+
 				if(typeof opr !== "undefined")
 				{}
 				else
@@ -95,39 +132,56 @@ function updateFilters(filters, worksheet,opr,minDays,maxDays)
 				{}
 				else
 				{maxDays=0;}
+
 				if(minDays == 0 && maxDays ==0)
 				{
+				//alert('both are 0'); 
 				return;
 				}
+				//alert(opr);alert(minDays);alert(maxDays);
 				if(minDays >0 && maxDays ==0)
-				{//alert('here1');alert(minDays);alert(diffDays);
-				maxVal.setDate(maxVal.getDate() -(parseInt(minDays, 10)));
-				minVal.setDate(minVal.getDate() -(diffDays));
+				{
+				//alert('max is 0');
+				maxVal.setDate(maxVal.getDate() -parseInt(minDays, 10));
+				minVal.setDate(minVal.getDate() -diffDays);
 				}
 				if(minDays == 0 && maxDays >0)
 				{
+				//alert('min is 0');
+
 				maxVal.setDate(maxVal.getDate() -(diffDays1-1));
 				minVal.setDate(minVal.getDate() -parseInt(maxDays, 10));
+
 				}
 				if(minDays > 0 && maxDays > 0)
 				{
+				//alert('both have values');
 				maxVal.setDate(maxVal.getDate() -parseInt(minDays, 10));
 				minVal.setDate(minVal.getDate() -parseInt(maxDays, 10));
 				}
 
+		//	maxVal= moment(maxVal);
+
+			//alert(minVal);
+			//alert(maxVal);
+
 			selectedWorksheet.applyRangeFilterAsync(fieldName,{min:minVal, max:maxVal});
+
+
 	}
 		}
 
 	});
 }
-		
 function configure() {
 			const popupUrl = 'https://mayurdesai24.github.io/DateRangeExtension/config.html';
 			let defaultPayload = "";
 			tableau.extensions.ui.displayDialogAsync(popupUrl, defaultPayload, { height:400, width:600 }).then((closePayload) => { 
+				//alert('config');
 				datefiltering();
-				}).catch((error) => {
+				// drawD3chart(); 03.30.19 old code
+				//getData_to_D3(); //0 3.30.19 test code
+			}).catch((error) => {
 				switch (error.errorCode) {
 					case tableau.ErrorCodes.DialogClosedByUser:
 					console.log("Dialog was closed by user");
@@ -140,4 +194,3 @@ function configure() {
 	})();
   </script>
 </html>
-	
